@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://web-sandbox.oaiusercontent.com/? -->
+<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RightX AI</title>
+<style>
+    body { margin:0; font-family: Arial, sans-serif; background:#f8f8f8; color:#000; }
+    .header { background:#fff; padding:15px; text-align:center; font-size:24px; font-weight:bold; border-bottom:1px solid #ddd;}
+    .container { display:flex; height:calc(100vh - 60px); }
+    .sidebar { width:220px; background:#fff; border-right:1px solid #ddd; padding:10px; overflow-y:auto; }
+    .sidebar h3 { margin-top:0; font-size:18px; }
+    .chat-list { list-style:none; padding:0; }
+    .chat-list li { padding:8px; border-bottom:1px solid #eee; cursor:pointer; }
+    .main { flex:1; padding:20px; display:flex; flex-direction:column; }
+    .tabs { display:flex; border-bottom:1px solid #ddd; margin-bottom:20px; }
+    .tab { padding:10px 20px; cursor:pointer; border:1px solid #ddd; border-bottom:none; margin-right:5px; border-radius:5px 5px 0 0; background:#eee; }
+    .tab.active { background:#fff; font-weight:bold; }
+    .tab-content { flex:1; background:#fff; border:1px solid #ddd; border-radius:0 5px 5px 5px; padding:20px; overflow-y:auto; }
+    button { padding:8px 12px; margin:5px 0; cursor:pointer; }
+    select,input { padding:6px; margin:5px 0; width:100%; }
+</style>
+<style>html,body,#root{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;margin:0;padding:0}html,body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica Neue,Arial,sans-serif!important}button,input,textarea,select{font-family:inherit}html{background-color:#fff}html.dark{background-color:#212121}html.mobileSkybridge.dark{background-color:#000}@supports (font: -apple-system-body){html.mobileSkybridge{font:-apple-system-body}}html.desktopSkybridge.dark{background-color:#1e1e1e}</style></head>
+<body>
+
+<div class="header">RightX AI</div>
+
+<div class="container">
+    <div class="sidebar">
+        <h3>Your Chats</h3>
+        <ul class="chat-list" id="chatList">
+            <!-- محفوظات الدردشة تظهر هنا -->
+        </ul>
+    </div>
+
+    <div class="main">
+        <div class="tabs">
+            <div class="tab active" data-tab="questions">حل الأسئلة</div>
+            <div class="tab" data-tab="images">توليد الصور</div>
+            <div class="tab" data-tab="videos">توليد الفيديو</div>
+        </div>
+        <div class="tab-content" id="tabContent">
+            <h2>حل الأسئلة والاستفسارات</h2>
+            <textarea id="questionInput" rows="4" placeholder="اكتب سؤالك هنا..."></textarea>
+            <button onclick="askQuestion()">اسأل</button>
+            <div id="answer" style="margin-top:20px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Tabs
+const tabs = document.querySelectorAll('.tab');
+const tabContent = document.getElementById('tabContent');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        loadTab(tab.dataset.tab);
+    });
+});
+
+const chatList = document.getElementById('chatList');
+
+function addChat(question, answer) {
+    const li = document.createElement('li');
+    li.textContent = question;
+    li.title = answer;
+    chatList.appendChild(li);
+}
+
+// محتوى كل تاب
+function loadTab(tab) {
+    if(tab==='questions'){
+        tabContent.innerHTML = `
+            <h2>حل الأسئلة والاستفسارات</h2>
+            <textarea id="questionInput" rows="4" placeholder="اكتب سؤالك هنا..."></textarea>
+            <button onclick="askQuestion()">اسأل</button>
+            <div id="answer" style="margin-top:20px;"></div>
+        `;
+    } else if(tab==='images'){
+        tabContent.innerHTML = `
+            <h2>توليد الصور AI</h2>
+            <select id="imageType">
+                <option value="nano">Nano</option>
+                <option value="nano-pro">Nano Pro (4 صور يوميا)</option>
+            </select>
+            <select id="imageSize">
+                <option value="9:16">9:16</option>
+                <option value="16:9">16:9</option>
+                <option value="1:1">1:1</option>
+            </select>
+            <input type="text" id="imagePrompt" placeholder="صف الصورة التي تريد توليدها..." />
+            <button onclick="generateImage()">توليد الصورة</button>
+            <div id="imageResult" style="margin-top:20px;"></div>
+        `;
+    } else if(tab==='videos'){
+        tabContent.innerHTML = `
+            <h2>توليد الفيديو AI</h2>
+            <input type="text" id="videoPrompt" placeholder="صف الفيديو الذي تريد توليده..." />
+            <select id="videoLength">
+                <option value="1">1 ثانية</option>
+                <option value="5">5 ثواني</option>
+                <option value="30">30 ثانية</option>
+                <option value="60">1 دقيقة</option>
+                <option value="300">5 دقائق</option>
+            </select>
+            <select id="videoVoice">
+                <option value="voice1">صوت AI 1</option>
+                <option value="voice2">صوت AI 2</option>
+                <option value="voice3">صوت AI 3</option>
+            </select>
+            <button onclick="generateVideo()">توليد الفيديو</button>
+            <div id="videoResult" style="margin-top:20px;"></div>
+        `;
+    }
+}
+
+// محاكاة الذكاء الاصطناعي (تقدر تربط API لاحقاً)
+function askQuestion(){
+    const question = document.getElementById('questionInput').value;
+    const answer = "هنا الإجابة على سؤالك: "+question; // Placeholder
+    document.getElementById('answer').innerText = answer;
+    addChat(question, answer);
+}
+
+function generateImage(){
+    const prompt = document.getElementById('imagePrompt').value;
+    const type = document.getElementById('imageType').value;
+    const size = document.getElementById('imageSize').value;
+    document.getElementById('imageResult').innerHTML = `<p>توليد صورة (${type}) بمقاس ${size}: "${prompt}"</p>`;
+}
+
+function generateVideo(){
+    const prompt = document.getElementById('videoPrompt').value;
+    const length = document.getElementById('videoLength').value;
+    const voice = document.getElementById('videoVoice').value;
+    document.getElementById('videoResult').innerHTML = `<p>توليد فيديو مدته ${length} ثانية مع ${voice}: "${prompt}"</p>`;
+}
+
+// تحميل التاب الافتراضي
+loadTab('questions');
+</script>
+
+
+</body></html>

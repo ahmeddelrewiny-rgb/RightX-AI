@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://web-sandbox.oaiusercontent.com/? -->
+<html lang="en" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Right X - AI Pro Studio</title>
+
+<!-- TailwindCSS -->
+<script src="./saved_resource"></script><style>html,body,#root{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;margin:0;padding:0}html,body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica Neue,Arial,sans-serif!important}button,input,textarea,select{font-family:inherit}html{background-color:#fff}html.dark{background-color:#212121}html.mobileSkybridge.dark{background-color:#000}@supports (font: -apple-system-body){html.mobileSkybridge{font:-apple-system-body}}html.desktopSkybridge.dark{background-color:#1e1e1e}</style>
+
+<!-- Firebase -->
+<script type="module">
+  // Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
+  import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "PUT_FIREBASE_API_KEY_HERE",
+    authDomain: "PUT_FIREBASE_PROJECT.firebaseapp.com",
+    projectId: "PUT_FIREBASE_PROJECT",
+    storageBucket: "PUT_FIREBASE_PROJECT.appspot.com",
+    messagingSenderId: "PUT_SENDER_ID",
+    appId: "PUT_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getFirestore();
+  const storage = getStorage();
+
+  window.auth = auth;
+  window.db = db;
+  window.storage = storage;
+</script>
+
+<style>
+body { font-family: 'Poppins', sans-serif; background: #0f172a; color: white; }
+.loader { border:4px solid rgba(255,255,255,0.1); border-left-color:#3b82f6; border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:auto; }
+@keyframes spin {100%{transform:rotate(360deg);}}
+canvas { border:2px solid #444; cursor:crosshair; }
+</style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.flex{display:flex}.min-h-screen{min-height:100vh}.w-full{width:100%}.max-w-4xl{max-width:56rem}.items-center{align-items:center}.justify-center{justify-content:center}.gap-2{gap:0.5rem}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity, 1))}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38 / var(--tw-bg-opacity, 1))}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-yellow-600{--tw-bg-opacity:1;background-color:rgb(202 138 4 / var(--tw-bg-opacity, 1))}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-6{padding:1.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.font-bold{font-weight:700}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}</style></head>
+
+<body class="flex justify-center items-center min-h-screen px-4">
+
+<div class="w-full max-w-4xl bg-slate-800 p-6 rounded-2xl shadow-2xl">
+
+<h1 class="text-3xl font-bold text-center mb-6">🚀 Right X - AI Pro Studio</h1>
+
+<!-- LOGIN / REGISTER -->
+<div class="mb-4 text-center">
+  <input id="email" type="email" placeholder="Email" class="w-full p-2 mb-2 bg-slate-700 rounded">
+  <input id="password" type="password" placeholder="Password" class="w-full p-2 mb-2 bg-slate-700 rounded">
+  <div class="flex gap-2 justify-center mb-2">
+    <button onclick="register()" class="bg-green-600 px-3 py-1 rounded">Register</button>
+    <button onclick="login()" class="bg-yellow-600 px-3 py-1 rounded">Login</button>
+    <button onclick="logout()" class="bg-red-600 px-3 py-1 rounded">Logout</button>
+  </div>
+  <p id="status" class="text-gray-400 text-sm"></p>
+</div>
+
+<!-- PROMPT -->
+<textarea id="prompt" placeholder="Describe your image or video..." class="w-full p-3 bg-slate-700 rounded mb-3"></textarea>
+
+<!-- OPTIONS -->
+<div class="flex gap-2 mb-4">
+  <select id="nanoType" class="bg-slate-700 p-2 rounded">
+    <option value="normal">Nano Banana (Unlimited)</option>
+    <option value="pro">Nano Banana Pro (4 images/day, 5 videos/day)</option>
+  </select>
+  <select id="imgSize" class="bg-slate-700 p-2 rounded">
+    <option value="512">512x512</option>
+    <option value="1024">1024x1024</option>
+    <option value="2048">2048x2048</option>
+  </select>
+  <select id="videoSize" class="bg-slate-700 p-2 rounded">
+    <option value="720">720p</option>
+    <option value="1080">1080p</option>
+    <option value="2160">4K</option>
+  </select>
+</div>
+
+<!-- BUTTONS -->
+<div class="flex gap-2 justify-center mb-4">
+  <button onclick="generateImage()" class="bg-blue-600 px-4 py-2 rounded">Generate Image</button>
+  <button onclick="generateVideo()" class="bg-purple-600 px-4 py-2 rounded">Generate Video</button>
+</div>
+
+<!-- UPLOAD IMAGE -->
+<input type="file" accept="image/*" onchange="loadImage(event)" class="mb-3">
+
+<!-- CANVAS -->
+<canvas id="canvas" width="512" height="512"></canvas>
+
+<div class="flex gap-2 mt-3 justify-center">
+  <button onclick="clearCanvas()" class="bg-gray-600 px-3 py-1 rounded">Clear</button>
+  <button onclick="downloadImage()" class="bg-green-600 px-3 py-1 rounded">Download</button>
+</div>
+
+<div id="result" class="mt-4 text-center"></div>
+
+<script type="module">
+import { auth, db, storage } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+const apiKey = "PUT_YOUR_AI_API_KEY_HERE";
+let currentUser = null;
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let dailyData = { images:0, videos:0, lastReset:0 };
+
+// ===== AUTH =====
+window.register = async function(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  if(!email||!password)return alert("Fill all fields");
+  try{
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(auth,email,password);
+    alert("Registered! Login now");
+  }catch(e){alert(e.message);}
+}
+window.login = async function(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  try{
+    const userCredential = await firebase.auth().signInWithEmailAndPassword(auth,email,password);
+    currentUser = userCredential.user;
+    document.getElementById("status").innerText = "Logged in: "+currentUser.email;
+    await loadDailyData();
+  }catch(e){alert(e.message);}
+}
+window.logout = async function(){
+  await firebase.auth().signOut(auth);
+  currentUser=null;
+  document.getElementById("status").innerText="Logged out";
+}
+
+// ===== DAILY DATA =====
+async function loadDailyData(){
+  const docRef = doc(db,"users",currentUser.uid);
+  const docSnap = await getDoc(docRef);
+  const today = new Date().setHours(0,0,0,0);
+  if(docSnap.exists()){
+    dailyData = docSnap.data();
+    if(dailyData.lastReset<today){
+      dailyData.images=0; dailyData.videos=0; dailyData.lastReset=today;
+      await setDoc(docRef,dailyData);
+    }
+  } else {
+    dailyData = { images:0, videos:0, lastReset:today };
+    await setDoc(docRef,dailyData);
+  }
+}
+
+// ===== DRAW =====
+let drawing=false;
+canvas.onmousedown=()=>drawing=true;
+canvas.onmouseup=()=>drawing=false;
+canvas.onmousemove=(e)=>{if(!drawing)return;ctx.fillStyle="white";ctx.fillRect(e.offsetX,e.offsetY,4,4);};
+function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);}
+function loadImage(e){const file=e.target.files[0];const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,512,512);img.src=URL.createObjectURL(file);}
+function downloadImage(){const a=document.createElement("a");a.href=canvas.toDataURL();a.download="image.png";a.click();}
+
+// ===== GENERATE IMAGE =====
+async function generateImage(){
+  if(!currentUser){alert("Login first"); return;}
+  const prompt = document.getElementById("prompt").value;
+  const type = document.getElementById("nanoType").value;
+  const size = document.getElementById("imgSize").value;
+  
+  // Check limits
+  if(type==="pro" && dailyData.images>=4){alert("Nano Banana Pro daily limit reached"); return;}
+  
+  result.innerHTML="<div class='loader'></div>";
+  
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      contents:[{parts:[{text:prompt}]}],
+      generationConfig:{responseModalities:["IMAGE"],imageConfig:{size:size}}
+    })
+  });
+  const data = await res.json();
+  const base64=data.candidates?.[0]?.content?.parts?.find(p=>p.inlineData)?.inlineData?.data;
+  if(base64){
+    const img=new Image();
+    img.onload=()=>ctx.drawImage(img,0,0,512,512);
+    img.src="data:image/png;base64,"+base64;
+    result.innerHTML="✅ Image Ready";
+    dailyData.images++;
+    await setDoc(doc(db,"users",currentUser.uid),dailyData,{merge:true});
+  } else result.innerHTML="❌ Error";
+}
+
+// ===== GENERATE VIDEO =====
+async function generateVideo(){
+  if(!currentUser){alert("Login first"); return;}
+  const prompt = document.getElementById("prompt").value;
+  const type = document.getElementById("nanoType").value;
+  const vSize = document.getElementById("videoSize").value;
+  if(type==="pro" && dailyData.videos>=5){alert("Nano Banana Pro daily video limit reached"); return;}
+  result.innerHTML="<div class='loader'></div>";
+  
+  let images=[];
+  const totalScenes = 20; // start small, user يقدر يغير لعدد أكبر لمده الفيديو
+  for(let i=0;i<totalScenes;i++){
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt+" scene "+i}]}],
+        generationConfig:{responseModalities:["IMAGE"],imageConfig:{size:512}}
+      })
+    });
+    const data = await res.json();
+    const base64=data.candidates?.[0]?.content?.parts?.find(p=>p.inlineData)?.inlineData?.data;
+    if(base64) images.push("data:image/png;base64,"+base64);
+  }
+  
+  createVideo(images);
+  dailyData.videos++;
+  await setDoc(doc(db,"users",currentUser.uid),dailyData,{merge:true});
+}
+
+// ===== CREATE VIDEO =====
+function createVideo(images){
+  const stream=canvas.captureStream(1);
+  const recorder=new MediaRecorder(stream);
+  let chunks=[];
+  recorder.ondataavailable=e=>chunks.push(e.data);
+  recorder.onstop=()=>{
+    const blob=new Blob(chunks,{type:"video/mp4"});
+    const url=URL.createObjectURL(blob);
+    result.innerHTML=`<video controls src="${url}" class="mx-auto"></video>
+    <br><a href="${url}" download="video.mp4" class="bg-green-600 px-3 py-1 rounded">Download Video</a>`;
+  };
+  recorder.start();
+  let i=0;
+  function draw(){
+    if(i>=images.length){recorder.stop();return;}
+    const img=new Image();
+    img.src=images[i];
+    img.onload=()=>{ctx.drawImage(img,0,0,512,512);i++;setTimeout(draw,1500);}
+  }
+  draw();
+}
+</script>
+</div>
+
+</body></html>
